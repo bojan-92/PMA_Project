@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.example.bojan.projekatpma.db.MarkerDataSource;
@@ -25,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     private GoogleMap mMap;
     Context context = this;
     MarkerDataSource data;
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +46,12 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
             LatLng latLng = new LatLng(Double.valueOf(slatlng[0]), Double.valueOf(slatlng[1]));
             mMap.addMarker(new MarkerOptions()
                     .title(markers.get(i).getTitle())
-                    .snippet(markers.get(i).getSnippet())
+                    .snippet(markers.get(i).getDescription())
                     .position(latLng)
             );
         }
         //data.addMarker(new Marker("test1","snippet test1","40.7769904 -122.4169725"));
-        data.close();
+
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -59,9 +61,17 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                             .position(latLng)
                             .title("You are here")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    Double lat = latLng.latitude;
+                    Double lng = latLng.longitude;
+                    String coordLat = lat.toString();
+                    String coordLng = lng.toString();
+
+
+                    data.addMarker(new Marker("Your location","Your description",coordLat + " " + coordLng));
                 }
             }
         });
+//        data.close();
     }
 
 

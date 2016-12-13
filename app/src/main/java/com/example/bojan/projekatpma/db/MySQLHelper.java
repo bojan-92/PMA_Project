@@ -13,7 +13,7 @@ public class MySQLHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "locations";
     public static final String ID_COL = "location_id";
     public static final String TITLE = "location_title";
-    public static final String SNIPPET = "location_snippet";
+    public static final String DESCRIPTION = "location_description";
     public static final String POSITION = "location_position";
 
     private static final int DB_VERSION = 1;
@@ -22,7 +22,7 @@ public class MySQLHelper extends SQLiteOpenHelper {
             "create table " + TABLE_NAME + "("
                     + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + TITLE + " TEXT, "
-                    + SNIPPET + " TEXT, "
+                    + DESCRIPTION + " TEXT, "
                     + POSITION + " TEXT);";
 
     public MySQLHelper(Context context) {

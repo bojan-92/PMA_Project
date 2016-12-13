@@ -8,22 +8,22 @@ public class Marker {
 
     private Long id;
     private String title;
-    private String snippet;
+    private String description;
     private String position;
 
     public Marker() {
     }
 
-    public Marker(Long id, String title, String snippet, String position) {
+    public Marker(Long id, String title, String description, String position) {
         this.id = id;
         this.title = title;
-        this.snippet = snippet;
+        this.description = description;
         this.position = position;
     }
 
-    public Marker(String title, String snippet, String position) {
+    public Marker(String title, String description, String position) {
         this.title = title;
-        this.snippet = snippet;
+        this.description = description;
         this.position = position;
     }
 
@@ -43,12 +43,12 @@ public class Marker {
         this.title = title;
     }
 
-    public String getSnippet() {
-        return snippet;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSnippet(String snippet) {
-        this.snippet = snippet;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPosition() {
