@@ -1,12 +1,24 @@
 package com.example.bojan.projekatpma;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bojan.projekatpma.db.MarkerDataSource;
 import com.example.bojan.projekatpma.model.Marker;
@@ -26,14 +38,22 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     private GoogleMap mMap;
     Context context = this;
     MarkerDataSource data;
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+    EditText titleInput;
+    EditText descInput;
+    Button showBtn;
+    LinearLayout linearLayout;
+    Marker m = new Marker();
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         initMap();
+
+
+
         data = new MarkerDataSource(context);
         try {
             data.open();
@@ -50,8 +70,30 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     .position(latLng)
             );
         }
-        //data.addMarker(new Marker("test1","snippet test1","40.7769904 -122.4169725"));
 
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(final com.google.android.gms.maps.model.Marker marker) {
+                DialogInterface.OnClickListener dialogOnClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                marker.remove();
+                                data.deleteMarker(new Marker(marker.getTitle(),marker.getSnippet(),
+                                        marker.getPosition().latitude + " " + marker.getPosition().longitude));
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Are you sure?").setPositiveButton("Yes",dialogOnClickListener)
+                        .setNegativeButton("No", dialogOnClickListener).show();
+            }
+        });
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -63,11 +105,103 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                     Double lat = latLng.latitude;
                     Double lng = latLng.longitude;
-                    String coordLat = lat.toString();
-                    String coordLng = lng.toString();
+                    final String coordLat = lat.toString();
+                    final String coordLng = lng.toString();
 
 
-                    data.addMarker(new Marker("Your location","Your description",coordLat + " " + coordLng));
+
+                   AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                    LinearLayout layout = new LinearLayout(context);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+
+                    final TextView title = new TextView(context);
+                    title.setText("Add new marker");
+                    title.setPadding(10,30,10,10);
+                    title.setGravity(Gravity.CENTER);
+                    title.setTextSize(20);
+                    builder.setCustomTitle(title);
+
+                    final EditText titleBox = new EditText(context);
+                    titleBox.setHint("Title");
+                    titleBox.setHintTextColor(Color.GRAY);
+                    layout.addView(titleBox);
+
+                    final EditText descriptionBox = new EditText(context);
+                    descriptionBox.setHint("Description...");
+                    descriptionBox.setHintTextColor(Color.GRAY);
+                    descriptionBox.setHeight(200);
+                    descriptionBox.setGravity(Gravity.TOP);
+                    layout.addView(descriptionBox);
+
+
+                    builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            m.setTitle(String.valueOf(titleBox.getText().toString()));
+                            m.setDescription(String.valueOf(descriptionBox.getText().toString()));
+                            m.setPosition(coordLat + " " + coordLng);
+                            data.addMarker(m);
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    builder.setView(layout);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+
+                    /*builder.setTitle("Add new marker");
+                    builder.setIcon(R.drawable.cast_ic_notification_0);
+                    input = new EditText(context);
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);*/
+
+                   /* TextView title = new TextView(context);
+                    title.setText("Add new marker");
+                    title.setPadding(10,100,10,100);
+                    title.setGravity(Gravity.CENTER);
+                    title.setTextSize(20);
+
+                    titleInput = new EditText(context);
+                    titleInput.setCursorVisible(true);
+                    titleInput.setHint("Title");
+                    titleInput.setHintTextColor(Color.GRAY);
+                    titleInput.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                    descInput = new EditText(context);
+                    descInput.setHeight(100);
+                    descInput.setCursorVisible(true);
+                    descInput.setHint("Description...");
+                    descInput.setHintTextColor(Color.GRAY);
+
+                    builder.setCustomTitle(title);
+                    builder.setView(titleInput);
+                    builder.setView(descInput);
+
+                    builder.setPositiveButton("Add New Marker", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            String txt = titleInput.getText().toString();
+                            Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();*/
+
+
+//                    data.addMarker(new Marker("Your location","Your description",coordLat + " " + coordLng));
                 }
             }
         });
@@ -97,4 +231,5 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     public void onLocationChanged(Location location) {
 
     }
+
 }

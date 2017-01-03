@@ -55,6 +55,10 @@ public class MarkerDataSource {
         return markers;
     }
 
+    public void deleteMarker(Marker marker){
+        db.delete(MySQLHelper.TABLE_NAME,MySQLHelper.POSITION + " = '" + marker.getPosition() + "'",null);
+    }
+
     private Marker cursorToMarker(Cursor cursor) {
         Marker m = new Marker();
         m.setTitle(cursor.getString(0));
