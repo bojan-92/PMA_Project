@@ -5,27 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by Bojan on 12/11/2016.
+ * Created by Bojan on 1/6/2017.
  */
 
-public class MySQLHelper extends SQLiteOpenHelper {
+public class MySQLHelperCategories extends SQLiteOpenHelper {
 
-    public static final String TABLE_NAME = "locations";
-    public static final String ID_COL = "location_id";
-    public static final String TITLE = "location_title";
-    public static final String DESCRIPTION = "location_description";
-    public static final String POSITION = "location_position";
+    public static final String TABLE_NAME = "categories";
+    public static final String ID_COL = "category_id";
+    public static final String TITLE = "category_title";
 
     private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "markerlocations.db";
+    private static final String DB_NAME = "categories.db";
     private static final String DB_CREATE =
             "create table " + TABLE_NAME + "("
                     + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + TITLE + " TEXT, "
-                    + DESCRIPTION + " TEXT, "
-                    + POSITION + " TEXT);";
+                    + TITLE + " TEXT); ";
 
-    public MySQLHelper(Context context) {
+    public MySQLHelperCategories(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

@@ -116,18 +116,11 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
-                if (mMap != null) {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title("You are here")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                    Double lat = latLng.latitude;
+            public void onMapLongClick(final LatLng latLng) {
+                    final Double lat = latLng.latitude;
                     Double lng = latLng.longitude;
                     final String coordLat = lat.toString();
                     final String coordLng = lng.toString();
-
-
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -161,6 +154,11 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                             m.setDescription(String.valueOf(descriptionBox.getText().toString()));
                             m.setPosition(coordLat + " " + coordLng);
                             data.addMarker(m);
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .snippet(String.valueOf(descriptionBox.getText().toString()))
+                                    .title(String.valueOf(titleBox.getText().toString()))
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                             dialogInterface.dismiss();
                         }
                     });
@@ -174,7 +172,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     builder.setView(layout);
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
+
             }
         });
     }

@@ -17,12 +17,12 @@ import java.util.List;
 
 public class MarkerDataSource {
 
-    MySQLHelper dbhelper;
+    MySQLHelperLocations dbhelper;
     SQLiteDatabase db;
-    String[] cols = {MySQLHelper.TITLE, MySQLHelper.DESCRIPTION, MySQLHelper.POSITION};
+    String[] cols = {MySQLHelperLocations.TITLE, MySQLHelperLocations.DESCRIPTION, MySQLHelperLocations.POSITION};
 
     public MarkerDataSource(Context context) {
-        dbhelper = new MySQLHelper(context);
+        dbhelper = new MySQLHelperLocations(context);
     }
 
     public void open() throws SQLException {
@@ -35,16 +35,16 @@ public class MarkerDataSource {
 
     public void addMarker(Marker marker) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MySQLHelper.TITLE, marker.getTitle());
-        contentValues.put(MySQLHelper.DESCRIPTION, marker.getDescription());
-        contentValues.put(MySQLHelper.POSITION, marker.getPosition());
+        contentValues.put(MySQLHelperLocations.TITLE, marker.getTitle());
+        contentValues.put(MySQLHelperLocations.DESCRIPTION, marker.getDescription());
+        contentValues.put(MySQLHelperLocations.POSITION, marker.getPosition());
 
-        db.insert(MySQLHelper.TABLE_NAME, null, contentValues);
+        db.insert(MySQLHelperLocations.TABLE_NAME, null, contentValues);
     }
 
     public List<Marker> getAllMarkers() {
         List<Marker> markers = new ArrayList<>();
-        Cursor cursor = db.query(MySQLHelper.TABLE_NAME, cols, null, null, null, null, null);
+        Cursor cursor = db.query(MySQLHelperLocations.TABLE_NAME, cols, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Marker m = cursorToMarker(cursor);
@@ -56,7 +56,7 @@ public class MarkerDataSource {
     }
 
     public void deleteMarker(Marker marker){
-        db.delete(MySQLHelper.TABLE_NAME,MySQLHelper.POSITION + " = '" + marker.getPosition() + "'",null);
+        db.delete(MySQLHelperLocations.TABLE_NAME, MySQLHelperLocations.POSITION + " = '" + marker.getPosition() + "'",null);
     }
 
     private Marker cursorToMarker(Cursor cursor) {

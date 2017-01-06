@@ -5,15 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by Bojan on 12/11/2016.
+ * Created by Bojan on 1/6/2017.
  */
 
-public class LocationsDB extends SQLiteOpenHelper {
+public class CategoriesDB extends SQLiteOpenHelper {
 
     /**
      * Database name
      */
-    private static final String DB_NAME = "markers.db";
+    private static final String DB_NAME = "categories.db";
 
     /**
      * Version of database
@@ -23,30 +23,24 @@ public class LocationsDB extends SQLiteOpenHelper {
     /**
      * id field
      */
-    public static final String FIELD_MARKER_ID = "_id";
+    public static final String FIELD_CATEGORY_ID = "_id";
 
     /**
-     * latitude field
+     * title field
      */
-    public static final String FIELD_MARKER_LATITUDE = "_latitude";
-
-    /**
-     * longitude field
-     */
-    public static final String FIELD_MARKER_LONGITUDE = "_longitude";
+    public static final String FIELD_CATEGORY_TITLE = "_title";
 
     /**
      * table name
      */
-    public static final String DATABASE_TABLE = "locations";
+    public static final String DATABASE_TABLE = "categories";
 
     public static final String DB_CREATE = "CREATE TABLE " + DATABASE_TABLE + " ( " +
-            FIELD_MARKER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
-            FIELD_MARKER_LONGITUDE + " TEXT , " +
-            FIELD_MARKER_LATITUDE + " TEXT , " +
+            FIELD_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+            FIELD_CATEGORY_TITLE + " TEXT , " +
             " ) ";
 
-    public LocationsDB(Context context) {
+    public CategoriesDB(Context context) {
         super(context, DB_NAME, null, VERSION);
     }
 
