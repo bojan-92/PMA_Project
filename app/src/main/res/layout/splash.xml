@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/mr_media_route_controller_art_max_height"
+    android:paddingRight="@dimen/mr_media_route_controller_art_max_height"
+    android:paddingTop="@dimen/mr_media_route_controller_art_max_height"
+    android:paddingBottom="@dimen/mr_media_route_controller_art_max_height"
+    tools:context=".splash.Splash"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/marker" />
+
+    <TextView
+        android:text="Marker saver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp"
+        android:id="@+id/textView"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="33px"
+        android:textStyle="normal|bold" />
+
+</RelativeLayout>
