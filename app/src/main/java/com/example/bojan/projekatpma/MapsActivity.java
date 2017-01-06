@@ -84,14 +84,33 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                                 data.deleteMarker(new Marker(marker.getTitle(),marker.getSnippet(),
                                         marker.getPosition().latitude + " " + marker.getPosition().longitude));
                                 break;
+                            case DialogInterface.BUTTON_NEUTRAL:
+                                DialogInterface.OnClickListener dialogOnClickListener1 = new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        switch (i){
+                                            case DialogInterface.BUTTON_POSITIVE:
+                                                marker.remove();
+                                                data.deleteMarker(new Marker(marker.getTitle(),marker.getSnippet(),
+                                                        marker.getPosition().latitude + " " + marker.getPosition().longitude));
+                                                break;
+                                            case DialogInterface.BUTTON_NEGATIVE:
+                                                break;
+                                        }
+                                    }
+                                };
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                                builder1.setMessage("Are you sure?").setPositiveButton("Yes",dialogOnClickListener1)
+                                        .setNegativeButton("No", dialogOnClickListener1).show();
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;
                         }
                     }
                 };
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure?").setPositiveButton("Yes",dialogOnClickListener)
-                        .setNegativeButton("No", dialogOnClickListener).show();
+                builder.setMessage("Title: " + " " + marker.getTitle() + "\n" +
+                "Description: " + " " + marker.getSnippet()).setNeutralButton("Delete",dialogOnClickListener)
+                        .setNegativeButton("Edit", dialogOnClickListener).setTitle("Details").show();
             }
         });
 
@@ -110,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
 
 
-                   AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                     LinearLayout layout = new LinearLayout(context);
                     layout.setOrientation(LinearLayout.VERTICAL);
@@ -155,57 +174,9 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     builder.setView(layout);
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-
-
-                    /*builder.setTitle("Add new marker");
-                    builder.setIcon(R.drawable.cast_ic_notification_0);
-                    input = new EditText(context);
-                    input.setInputType(InputType.TYPE_CLASS_TEXT);*/
-
-                   /* TextView title = new TextView(context);
-                    title.setText("Add new marker");
-                    title.setPadding(10,100,10,100);
-                    title.setGravity(Gravity.CENTER);
-                    title.setTextSize(20);
-
-                    titleInput = new EditText(context);
-                    titleInput.setCursorVisible(true);
-                    titleInput.setHint("Title");
-                    titleInput.setHintTextColor(Color.GRAY);
-                    titleInput.setInputType(InputType.TYPE_CLASS_TEXT);
-
-                    descInput = new EditText(context);
-                    descInput.setHeight(100);
-                    descInput.setCursorVisible(true);
-                    descInput.setHint("Description...");
-                    descInput.setHintTextColor(Color.GRAY);
-
-                    builder.setCustomTitle(title);
-                    builder.setView(titleInput);
-                    builder.setView(descInput);
-
-                    builder.setPositiveButton("Add New Marker", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            String txt = titleInput.getText().toString();
-                            Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();*/
-
-
-//                    data.addMarker(new Marker("Your location","Your description",coordLat + " " + coordLng));
                 }
             }
         });
-//        data.close();
     }
 
 
