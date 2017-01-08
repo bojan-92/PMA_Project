@@ -1,34 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/mr_media_route_controller_art_max_height"
-    android:paddingRight="@dimen/mr_media_route_controller_art_max_height"
-    android:paddingTop="@dimen/mr_media_route_controller_art_max_height"
-    android:paddingBottom="@dimen/mr_media_route_controller_art_max_height"
-    tools:context=".splash.Splash"
-    >
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/marker" />
 
     <TextView
-        android:text="Marker saver"
+        android:id="@+id/load_per"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/progressBar1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
-        android:id="@+id/textView"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="33px"
-        android:textStyle="normal|bold" />
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Marker Saver"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:fontFamily="casual"
+        android:textStyle="normal|bold"
+        android:textAllCaps="true"
+        android:textSize="22sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="68dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
