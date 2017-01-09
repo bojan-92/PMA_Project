@@ -37,6 +37,13 @@ public class MainMenu extends Activity {
                 System.exit(0);
             }
         });
+        categoriesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent categories = new Intent(MainMenu.this, AddCategory.class);
+                startActivity(categories);
+            }
+        });
 
     }
 }
