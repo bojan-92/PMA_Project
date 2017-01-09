@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.bojan.projekatpma.MapsActivity;
 import com.example.bojan.projekatpma.R;
+import com.example.bojan.projekatpma.menu.MainMenu;
 
 /**
  * Created by Bojan on 1/6/2017.
@@ -52,7 +53,7 @@ public class Splash extends Activity {
                     }
                 }
                 if (progressStatus == 100) {
-                    Intent i = new Intent(Splash.this, MapsActivity.class);
+                    Intent i = new Intent(Splash.this, MainMenu.class);
                     startActivity(i);
                 }
             }

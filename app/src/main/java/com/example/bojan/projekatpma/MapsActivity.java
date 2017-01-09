@@ -52,8 +52,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         initMap();
 
-
-
         data = new MarkerDataSource(context);
         try {
             data.open();
