@@ -36,14 +36,14 @@ public class CategoryDataSource {
 
     public void addCategory(Category category) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MySQLHelperLocations.TITLE, category.getTitle());
+        contentValues.put(MySQLHelperCategories.TITLE, category.getTitle());
 
-        db.insert(MySQLHelperLocations.TABLE_NAME, null, contentValues);
+        db.insert(MySQLHelperCategories.TABLE_NAME, null, contentValues);
     }
 
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
-        Cursor cursor = db.query(MySQLHelperLocations.TABLE_NAME, cols, null, null, null, null, null);
+        Cursor cursor = db.query(MySQLHelperCategories.TABLE_NAME, cols, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Category c = cursorToCategory(cursor);
@@ -55,7 +55,7 @@ public class CategoryDataSource {
     }
 
     public void deleteCategory(Category category){
-        db.delete(MySQLHelperLocations.TABLE_NAME, MySQLHelperCategories.TITLE + category.getTitle() + "'",null);
+        db.delete(MySQLHelperCategories.TABLE_NAME, MySQLHelperCategories.TITLE + category.getTitle() + "'",null);
     }
 
     private Category cursorToCategory(Cursor cursor) {
