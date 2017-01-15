@@ -17,7 +17,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/layoutDisplayCategories"
+                android:id="@+id/layoutDisplayPeople1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -26,13 +26,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Categories"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:text="People"
                     android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvNoRecordsFound"
+                    android:id="@+id/tvNoRecordsFound1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
@@ -40,12 +39,11 @@
                     android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:text="No Records Found"
-                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="15dp" />
 
 
                 <LinearLayout
-                    android:id="@+id/parentLayout"
+                    android:id="@+id/parentLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"></LinearLayout>
@@ -57,7 +55,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btnAddNewRecord"
+        android:id="@+id/btnAddNewRecord1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADD"

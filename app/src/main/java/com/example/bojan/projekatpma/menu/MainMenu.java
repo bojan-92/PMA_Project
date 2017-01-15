@@ -6,9 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.bojan.projekatpma.MainActivity;
 import com.example.bojan.projekatpma.MapsActivity;
 import com.example.bojan.projekatpma.R;
-import com.example.bojan.projekatpma.category.AddCategory;
+import com.example.bojan.projekatpma.category.ListAllCategories;
 
 /**
  * Created by Bojan on 1/9/2017.
@@ -41,7 +42,7 @@ public class MainMenu extends Activity {
         categoriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent categories = new Intent(MainMenu.this, AddCategory.class);
+                Intent categories = new Intent(MainMenu.this, ListAllCategories.class);
                 startActivity(categories);
             }
         });

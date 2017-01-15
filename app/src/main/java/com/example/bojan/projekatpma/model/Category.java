@@ -6,21 +6,21 @@ package com.example.bojan.projekatpma.model;
 
 public class Category {
 
-    private Long id;
+    private String id;
     private String title;
 
     public Category(){}
 
-    public Category(Long id, String title) {
+    public Category(String id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

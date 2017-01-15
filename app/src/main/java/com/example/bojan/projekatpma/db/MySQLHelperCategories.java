@@ -14,8 +14,8 @@ public class MySQLHelperCategories extends SQLiteOpenHelper {
     public static final String ID_COL = "category_id";
     public static final String TITLE = "category_title";
 
-    private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "categories.db";
+    public static final int DB_VERSION = 1;
+    public static final String DB_NAME = "categories.db";
     private static final String DB_CREATE =
             "create table " + TABLE_NAME + "("
                     + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
