@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.bojan.projekatpma.MainActivity;
 import com.example.bojan.projekatpma.MapsActivity;
 import com.example.bojan.projekatpma.R;
 import com.example.bojan.projekatpma.category.ListAllCategories;

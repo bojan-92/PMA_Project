@@ -125,7 +125,8 @@ public class ListAllCategories extends AppCompatActivity {
                                 } else {
                                     AlertDialog.Builder deleteDialogOk = new AlertDialog.Builder(ListAllCategories.this);
                                     deleteDialogOk.setTitle("Delete Category?");
-                                    deleteDialogOk.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    deleteDialogOk.setPositiveButton("OK",
+                                            new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Category category1 = new Category();

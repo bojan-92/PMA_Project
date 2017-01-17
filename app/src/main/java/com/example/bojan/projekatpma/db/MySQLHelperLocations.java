@@ -16,8 +16,8 @@ public class MySQLHelperLocations extends SQLiteOpenHelper {
     public static final String DESCRIPTION = "location_description";
     public static final String POSITION = "location_position";
 
-    private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "markerlocations.db";
+    public static final int DB_VERSION = 1;
+    public static final String DB_NAME = "markerlocations.db";
     private static final String DB_CREATE =
             "create table " + TABLE_NAME + "("
                     + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "

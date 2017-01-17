@@ -12,6 +12,7 @@ public class Constants {
     public static final String INSERT = "Insert";
     public static final String DELETE = "Delete";
     public static final String TITLE = "Title";
+    public static final String DESCRIPTION = "Description";
     public static final String FIRST_NAME = "Firstname";
     public static final String LAST_NAME = "Lastname";
     public static final String ID = "ID";

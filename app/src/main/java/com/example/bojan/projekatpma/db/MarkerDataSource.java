@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.bojan.projekatpma.model.Category;
 import com.example.bojan.projekatpma.model.Marker;
 
 import java.util.ArrayList;
@@ -15,14 +17,14 @@ import java.util.List;
  * Created by Bojan on 12/11/2016.
  */
 
-public class MarkerDataSource {
+public class MarkerDataSource extends SQLiteOpenHelper {
 
     MySQLHelperLocations dbhelper;
     SQLiteDatabase db;
-    String[] cols = {MySQLHelperLocations.TITLE, MySQLHelperLocations.DESCRIPTION, MySQLHelperLocations.POSITION};
+    String[] cols = {MySQLHelperLocations.ID_COL,MySQLHelperLocations.TITLE, MySQLHelperLocations.DESCRIPTION, MySQLHelperLocations.POSITION};
 
     public MarkerDataSource(Context context) {
-        dbhelper = new MySQLHelperLocations(context);
+        super(context, MySQLHelperLocations.DB_NAME, null, MySQLHelperLocations.DB_VERSION);
     }
 
     public void open() throws SQLException {
@@ -33,30 +35,63 @@ public class MarkerDataSource {
         db.close();
     }
 
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
+
     public void addMarker(Marker marker) {
+        db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MySQLHelperLocations.TITLE, marker.getTitle());
         contentValues.put(MySQLHelperLocations.DESCRIPTION, marker.getDescription());
         contentValues.put(MySQLHelperLocations.POSITION, marker.getPosition());
 
         db.insert(MySQLHelperLocations.TABLE_NAME, null, contentValues);
+        db.close();
     }
 
     public List<Marker> getAllMarkers() {
+        db = this.getReadableDatabase();
+        Cursor cursor = db.query(MySQLHelperLocations.TABLE_NAME, null, null, null, null, null, null);
         List<Marker> markers = new ArrayList<>();
-        Cursor cursor = db.query(MySQLHelperLocations.TABLE_NAME, cols, null, null, null, null, null);
-        cursor.moveToFirst();
+        Marker marker;
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+
+                marker = new Marker();
+                marker.setId(cursor.getString(0));
+                marker.setTitle(cursor.getString(1));
+                marker.setDescription(cursor.getString(2));
+                marker.setPosition(cursor.getString(3));
+                markers.add(marker);
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return markers;
+        /*cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Marker m = cursorToMarker(cursor);
             markers.add(m);
             cursor.moveToNext();
         }
         cursor.close();
-        return markers;
+        return markers;*/
     }
 
     public void deleteMarker(Marker marker){
-        db.delete(MySQLHelperLocations.TABLE_NAME, MySQLHelperLocations.POSITION + " = '" + marker.getPosition() + "'",null);
+        db = this.getReadableDatabase();
+        db.delete(MySQLHelperLocations.TABLE_NAME,MySQLHelperLocations.ID_COL + " = ?",new String[]{marker.getId()});
+        db.close();
+        //db.delete(MySQLHelperLocations.TABLE_NAME, MySQLHelperLocations.POSITION + " = '" + marker.getPosition() + "'",null);
     }
 
     private Marker cursorToMarker(Cursor cursor) {
@@ -67,4 +102,19 @@ public class MarkerDataSource {
 
         return m;
     }
+
+    public void updateMarker(Marker marker) {
+        db = this.getReadableDatabase();
+        db.execSQL("update " + MySQLHelperLocations.TABLE_NAME + " set " + MySQLHelperLocations.TITLE + " = '"
+                + marker.getTitle() + "', " + MySQLHelperLocations.DESCRIPTION + " = '" + marker.getDescription()
+                + "' where " + MySQLHelperLocations.ID_COL + " = '" + marker.getId() + "'");
+        db.close();
+      /*  db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MySQLHelperLocations.TITLE, marker.getTitle());
+        contentValues.put(MySQLHelperLocations.DESCRIPTION, marker.getDescription());
+        db.update(MySQLHelperLocations.TABLE_NAME, contentValues, MySQLHelperLocations.ID_COL + " = ?", new String[]{marker.getId()});
+        db.close();*/
+    }
+
 }
