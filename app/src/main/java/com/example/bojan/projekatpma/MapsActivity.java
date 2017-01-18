@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import com.example.bojan.projekatpma.db.MarkerDataSource;
@@ -74,11 +75,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch (i) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                marker.remove();
-                                data.deleteMarker(new Marker(marker.getTitle(), marker.getSnippet(),
-                                        marker.getPosition().latitude + " " + marker.getPosition().longitude));
-                                break;
                             case DialogInterface.BUTTON_NEUTRAL:
                                 DialogInterface.OnClickListener dialogOnClickListener1 = new DialogInterface.OnClickListener() {
                                     @Override
@@ -97,47 +93,38 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                                 builder1.setMessage("Are you sure?").setPositiveButton("Yes", dialogOnClickListener1)
                                         .setNegativeButton("No", dialogOnClickListener1).show();
+                                break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 LayoutInflater li = LayoutInflater.from(context);
-                                final View v = li.inflate(R.layout.edit_marker,null);
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setView(v);
-                                builder.setCancelable(false);
+                                final View v1 = li.inflate(R.layout.edit_marker,null);
+                                AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
+                                builder2.setView(v1);
+                                builder2.setCancelable(false);
 
-                                builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                builder2.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int which) {
-                                        marker.hideInfoWindow();
-                                        EditText etEditMarkerTitle = (EditText)v.findViewById(R.id.etEditMarkerTitle);
-                                        EditText etEditMarkerDesc = (EditText)v.findViewById(R.id.etEditMarkerDesc);
-                                        Marker mkr = new Marker();
-                                        etEditMarkerTitle.setText(String.valueOf(marker.getTitle()));
-                                        etEditMarkerDesc.setText(String.valueOf(marker.getSnippet()));
-                                        String id = marker.getId();
+                                        EditText etEditMarkerTitle = (EditText)v1.findViewById(R.id.etEditMarkerTitle);
+                                        EditText etEditMarkerDesc = (EditText)v1.findViewById(R.id.etEditMarkerDesc);
+
                                         marker.setTitle(String.valueOf(etEditMarkerTitle.getText().toString()));
                                         marker.setSnippet(String.valueOf(etEditMarkerDesc.getText().toString()));
                                         m.setTitle(String.valueOf(etEditMarkerTitle.getText().toString()));
                                         m.setDescription(String.valueOf(etEditMarkerDesc.getText().toString()));
-                                        /*m.setPosition();*/
-                                        data.updateMarker(m);
-                                        mMap.addMarker(new MarkerOptions()
-                                                .position(marker.getPosition())
-                                                .snippet(String.valueOf(etEditMarkerDesc.getText().toString()))
-                                                .title(String.valueOf(etEditMarkerTitle.getText().toString()))
-                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                                        data.updateMarker(new Marker(marker.getTitle(), marker.getSnippet(),
+                                                marker.getPosition().latitude + " " + marker.getPosition().longitude));
                                         dialogInterface.dismiss();
                                     }
                                 });
-                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         dialogInterface.cancel();
                                     }
                                 });
 
-                                AlertDialog alertDialog = builder.create();
+                                AlertDialog alertDialog = builder2.create();
                                 alertDialog.show();
-
                                 break;
                         }
                     }

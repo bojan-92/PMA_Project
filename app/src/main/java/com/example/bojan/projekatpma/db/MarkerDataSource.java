@@ -88,10 +88,12 @@ public class MarkerDataSource extends SQLiteOpenHelper {
     }
 
     public void deleteMarker(Marker marker){
-        db = this.getReadableDatabase();
+       /* db = this.getReadableDatabase();
         db.delete(MySQLHelperLocations.TABLE_NAME,MySQLHelperLocations.ID_COL + " = ?",new String[]{marker.getId()});
+        db.close()*/;
+        db = this.getReadableDatabase();
+        db.delete(MySQLHelperLocations.TABLE_NAME, MySQLHelperLocations.POSITION + " = '" + marker.getPosition() + "'",null);
         db.close();
-        //db.delete(MySQLHelperLocations.TABLE_NAME, MySQLHelperLocations.POSITION + " = '" + marker.getPosition() + "'",null);
     }
 
     private Marker cursorToMarker(Cursor cursor) {
@@ -105,16 +107,12 @@ public class MarkerDataSource extends SQLiteOpenHelper {
 
     public void updateMarker(Marker marker) {
         db = this.getReadableDatabase();
-        db.execSQL("update " + MySQLHelperLocations.TABLE_NAME + " set " + MySQLHelperLocations.TITLE + " = '"
-                + marker.getTitle() + "', " + MySQLHelperLocations.DESCRIPTION + " = '" + marker.getDescription()
-                + "' where " + MySQLHelperLocations.ID_COL + " = '" + marker.getId() + "'");
-        db.close();
-      /*  db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MySQLHelperLocations.TITLE, marker.getTitle());
         contentValues.put(MySQLHelperLocations.DESCRIPTION, marker.getDescription());
-        db.update(MySQLHelperLocations.TABLE_NAME, contentValues, MySQLHelperLocations.ID_COL + " = ?", new String[]{marker.getId()});
-        db.close();*/
+        contentValues.put(MySQLHelperLocations.POSITION, marker.getPosition());
+        db.update(MySQLHelperLocations.TABLE_NAME,contentValues,MySQLHelperLocations.POSITION + " = '" + marker.getPosition() + "'",null);
+        db.close();
     }
 
 }
