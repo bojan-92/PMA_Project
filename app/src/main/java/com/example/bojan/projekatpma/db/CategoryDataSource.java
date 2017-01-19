@@ -55,7 +55,7 @@ public class CategoryDataSource extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Category> getAllCategories() {
+    public List<Category> getAllCategories() {
         db = this.getReadableDatabase();
         Cursor cursor = db.query(MySQLHelperCategories.TABLE_NAME, null, null, null, null, null, null);
 
@@ -76,6 +76,29 @@ public class CategoryDataSource extends SQLiteOpenHelper {
         db.close();
 
         return categories;
+    }
+
+    public List<String> getAllCategoriesNames(){
+        List<String> labels = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = " SELECT " + MySQLHelperCategories.TITLE + " FROM "+ MySQLHelperCategories.TABLE_NAME;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                labels.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        // closing connection
+        cursor.close();
+        db.close();
+
+        // returning lables
+        return labels;
     }
 
     public void deleteCategory(Category category){

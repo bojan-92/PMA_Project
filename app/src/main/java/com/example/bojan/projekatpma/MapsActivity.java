@@ -4,24 +4,31 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import com.example.bojan.projekatpma.db.CategoryDataSource;
 import com.example.bojan.projekatpma.db.MarkerDataSource;
+import com.example.bojan.projekatpma.db.MySQLHelperCategories;
+import com.example.bojan.projekatpma.model.Category;
 import com.example.bojan.projekatpma.model.Marker;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,33 +37,34 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements LocationListener {
 
     private GoogleMap mMap;
     Context context = this;
-    MarkerDataSource data;
-    EditText titleInput;
-    EditText descInput;
-    Button showBtn;
-    LinearLayout linearLayout;
+    MarkerDataSource mData;
+    CategoryDataSource cData;
     Marker m = new Marker();
-
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+
         initMap();
-        data = new MarkerDataSource(context);
+        mData = new MarkerDataSource(context);
+        cData = new CategoryDataSource(context);
         try {
-            data.open();
+            mData.open();
+            cData.open();
         } catch (Exception e) {
             Log.i("Connection unsuccessful", "Connection unsuccessful");
         }
-        final List<Marker> markers = data.getAllMarkers();
+        final List<Marker> markers = mData.getAllMarkers();
         for (int i = 0; i < markers.size(); i++) {
             String[] slatlng = markers.get(i).getPosition().split(" ");
             LatLng latLng = new LatLng(Double.valueOf(slatlng[0]), Double.valueOf(slatlng[1]));
@@ -67,6 +75,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
             );
         }
 
+        //loadSpinnerData();
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -82,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                                         switch (i) {
                                             case DialogInterface.BUTTON_POSITIVE:
                                                 marker.remove();
-                                                data.deleteMarker(new Marker(marker.getTitle(), marker.getSnippet(),
+                                                mData.deleteMarker(new Marker(marker.getTitle(), marker.getSnippet(),
                                                         marker.getPosition().latitude + " " + marker.getPosition().longitude));
                                                 break;
                                             case DialogInterface.BUTTON_NEGATIVE:
@@ -111,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                                         marker.setSnippet(String.valueOf(etEditMarkerDesc.getText().toString()));
                                         m.setTitle(String.valueOf(etEditMarkerTitle.getText().toString()));
                                         m.setDescription(String.valueOf(etEditMarkerDesc.getText().toString()));
-                                        data.updateMarker(new Marker(marker.getTitle(), marker.getSnippet(),
+                                        mData.updateMarker(new Marker(marker.getTitle(), marker.getSnippet(),
                                                 marker.getPosition().latitude + " " + marker.getPosition().longitude));
                                         dialogInterface.dismiss();
                                     }
@@ -142,6 +151,15 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                 LayoutInflater li = LayoutInflater.from(context);
                 final View v = li.inflate(R.layout.add_marker,null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                Spinner spinner = (Spinner)v.findViewById(R.id.spinner);
+                //MySQLHelperCategories db = new MySQLHelperCategories(getApplicationContext());
+                List<String> lables = cData.getAllCategoriesNames();
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, lables);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(dataAdapter);
+                final String cat = spinner.getSelectedItem().toString();
+
                 builder.setView(v);
                 builder.setCancelable(false);
 
@@ -155,10 +173,13 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
                         EditText etMarkerTitle = (EditText)v.findViewById(R.id.etMarkerTitle);
                         EditText etMarkerDesc = (EditText)v.findViewById(R.id.etMarkerDesc);
+                        Marker mkr = new Marker(String.valueOf(etMarkerTitle.getText().toString()),
+                                String.valueOf(etMarkerDesc.getText().toString()),coordLat + " " + coordLng,cat);/*
                         m.setTitle(String.valueOf(etMarkerTitle.getText().toString()));
                         m.setDescription(String.valueOf(etMarkerDesc.getText().toString()));
                         m.setPosition(coordLat + " " + coordLng);
-                        data.addMarker(m);
+                        m.setCategory(cat);*/
+                        mData.addMarker(mkr);
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .snippet(String.valueOf(etMarkerDesc.getText().toString()))
@@ -177,23 +198,9 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
 
-
-
             }
         });
     }
-
-
-    /**
-     * da
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);

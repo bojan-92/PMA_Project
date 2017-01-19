@@ -94,7 +94,7 @@ public class ListAllCategories extends AppCompatActivity {
     private void displayAllRecords() {
         LinearLayout inflateParentView;
         parentLayout.removeAllViews();
-        ArrayList<Category> categories = sqlHelperCategories.getAllCategories();
+        List<Category> categories = sqlHelperCategories.getAllCategories();
 
         if (categories.size() > 0) {
             tvNoRecordsFound.setVisibility(View.GONE);

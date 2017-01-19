@@ -21,7 +21,8 @@ public class MarkerDataSource extends SQLiteOpenHelper {
 
     MySQLHelperLocations dbhelper;
     SQLiteDatabase db;
-    String[] cols = {MySQLHelperLocations.ID_COL,MySQLHelperLocations.TITLE, MySQLHelperLocations.DESCRIPTION, MySQLHelperLocations.POSITION};
+    String[] cols = {MySQLHelperLocations.ID_COL,MySQLHelperLocations.TITLE, MySQLHelperLocations.DESCRIPTION,
+            MySQLHelperLocations.POSITION,MySQLHelperLocations.CATEGORY};
 
     public MarkerDataSource(Context context) {
         super(context, MySQLHelperLocations.DB_NAME, null, MySQLHelperLocations.DB_VERSION);
@@ -51,6 +52,7 @@ public class MarkerDataSource extends SQLiteOpenHelper {
         contentValues.put(MySQLHelperLocations.TITLE, marker.getTitle());
         contentValues.put(MySQLHelperLocations.DESCRIPTION, marker.getDescription());
         contentValues.put(MySQLHelperLocations.POSITION, marker.getPosition());
+        contentValues.put(MySQLHelperLocations.CATEGORY,marker.getCategory());
 
         db.insert(MySQLHelperLocations.TABLE_NAME, null, contentValues);
         db.close();
@@ -70,6 +72,7 @@ public class MarkerDataSource extends SQLiteOpenHelper {
                 marker.setTitle(cursor.getString(1));
                 marker.setDescription(cursor.getString(2));
                 marker.setPosition(cursor.getString(3));
+                /*marker.setCategory(cursor.getString(4));*/
                 markers.add(marker);
             }
         }
@@ -77,14 +80,6 @@ public class MarkerDataSource extends SQLiteOpenHelper {
         db.close();
 
         return markers;
-        /*cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Marker m = cursorToMarker(cursor);
-            markers.add(m);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return markers;*/
     }
 
     public void deleteMarker(Marker marker){
@@ -101,7 +96,7 @@ public class MarkerDataSource extends SQLiteOpenHelper {
         m.setTitle(cursor.getString(0));
         m.setDescription(cursor.getString(1));
         m.setPosition(cursor.getString(2));
-
+        m.setCategory(cursor.getString(3));
         return m;
     }
 
@@ -111,6 +106,7 @@ public class MarkerDataSource extends SQLiteOpenHelper {
         contentValues.put(MySQLHelperLocations.TITLE, marker.getTitle());
         contentValues.put(MySQLHelperLocations.DESCRIPTION, marker.getDescription());
         contentValues.put(MySQLHelperLocations.POSITION, marker.getPosition());
+        contentValues.put(MySQLHelperLocations.CATEGORY,marker.getCategory());
         db.update(MySQLHelperLocations.TABLE_NAME,contentValues,MySQLHelperLocations.POSITION + " = '" + marker.getPosition() + "'",null);
         db.close();
     }

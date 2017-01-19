@@ -10,15 +10,24 @@ public class Marker {
     private String title;
     private String description;
     private String position;
+    private String category;
 
     public Marker() {
     }
 
-    public Marker(String id, String title, String description, String position) {
+    public Marker(String id, String title, String description, String position,String category) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.position = position;
+        this.category = category;
+    }
+
+    public Marker(String title, String description, String position,String category) {
+        this.title = title;
+        this.description = description;
+        this.position = position;
+        this.category = category;
     }
 
     public Marker(String title, String description, String position) {
@@ -57,5 +66,13 @@ public class Marker {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
